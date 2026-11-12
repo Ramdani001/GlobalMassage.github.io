@@ -1,0 +1,7 @@
+<?php
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;use App\Models\LandingSection;use Illuminate\Http\Request;use Illuminate\Support\Facades\Storage;
+class LandingSectionController extends Controller {
+ public function index(){ $sections=LandingSection::orderBy('sort_order')->get();return view('admin.sections.index',compact('sections')); }
+ public function update(Request $r,LandingSection $section){$data=$r->validate(['eyebrow'=>'nullable|string|max:150','title'=>'nullable|string|max:255','subtitle'=>'nullable|string|max:255','description'=>'nullable|string|max:2000','body'=>'nullable|string|max:5000','primary_cta_text'=>'nullable|string|max:100','primary_cta_url'=>'nullable|string|max:500','secondary_cta_text'=>'nullable|string|max:100','secondary_cta_url'=>'nullable|string|max:500','is_visible'=>'nullable|boolean','image'=>'nullable|image|mimes:jpg,jpeg,png,webp|max:5120','remove_image'=>'nullable|boolean']);if($r->hasFile('image')){if($section->image_path)Storage::disk('public')->delete($section->image_path);$data['image_path']=$r->file('image')->store('sections','public');}if($r->boolean('remove_image')){if($section->image_path)Storage::disk('public')->delete($section->image_path);$data['image_path']=null;} $data['is_visible']=$r->boolean('is_visible');$section->update($data);return back()->with('success','Konten '.$section->label.' berhasil diperbarui.');}
+}

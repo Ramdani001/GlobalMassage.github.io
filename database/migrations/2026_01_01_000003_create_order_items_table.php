@@ -1,0 +1,3 @@
+<?php
+use Illuminate\Database\Migrations\Migration;use Illuminate\Database\Schema\Blueprint;use Illuminate\Support\Facades\Schema;
+return new class extends Migration {public function up():void{Schema::create('order_items',function(Blueprint $t){$t->id();$t->foreignId('order_id')->constrained()->cascadeOnDelete();$t->foreignId('service_id')->nullable()->constrained('services')->nullOnDelete();$t->enum('item_type',['addon','package'])->default('addon');$t->string('name');$t->unsignedBigInteger('price');$t->unsignedInteger('quantity')->default(1);$t->timestamps();});}public function down():void{Schema::dropIfExists('order_items');}};

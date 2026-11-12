@@ -1,0 +1,3 @@
+<?php
+use Illuminate\Database\Migrations\Migration;use Illuminate\Database\Schema\Blueprint;use Illuminate\Support\Facades\Schema;
+return new class extends Migration {public function up():void{Schema::create('services',function(Blueprint $t){$t->id();$t->string('name');$t->enum('category',['Standard','Long Time','Add-on']);$t->string('duration',60);$t->unsignedBigInteger('price');$t->text('description')->nullable();$t->string('label')->nullable();$t->enum('status',['Active','Inactive'])->default('Active');$t->unsignedInteger('sort_order')->default(0);$t->timestamps();$t->index(['category','status']);});}public function down():void{Schema::dropIfExists('services');}};
